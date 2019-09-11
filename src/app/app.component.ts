@@ -6,5 +6,21 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'calculator';
+  valueHolder = 0
+
+  numberClicked(number) {
+    console.log(`${number} button clicked`)
+  }
+
+  addClicked() {
+    console.log(`add button clicked`)
+  }
+
+  subClicked() {
+    console.log(`sub button clicked`)
+  }
+
+  equalClicked() {
+    console.log(`equal button clicked`)
+  }
 }
