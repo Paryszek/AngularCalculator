@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CalculatorVM } from '../viewmodels/calculator.model';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class CalculatorService {
+@Injectable()
+export class CalculatorService {  
   calculatorDataStream: BehaviorSubject<CalculatorVM> = new BehaviorSubject<CalculatorVM>(new CalculatorVM());
   constructor() {}
 
   updateCalculatorStream(calcVM: CalculatorVM) {
-    if (!calcVM) return;
+    if (!calcVM) {
+      return;
+    }
 
     this.calculatorDataStream.next(calcVM);
   }
@@ -23,19 +23,29 @@ export class CalculatorService {
     return this.calculatorDataStream.getValue();
   }
 
-  updateCurrState(calcVM: CalculatorVM) {
-    const calcState = this.getCalculatorData();
-    calcState.setFirstNumber = calcVM.getFirstNumber;
-    calcState.setSecondNumber = calcVM.getSecondNumber;
-    calcState.setOperator = calcVM.setOperator;
-    this.updateCalculatorStream(calcState);
+  calculate() {
+    const calcData = this.getCalculatorData();
+    const newCalcData = this.calcValue(calcData);
+    this.updateCalculatorStream(newCalcData);
   }
 
-  addValues(first: number, second: number): number {    
+  addValues(first: number, second: number): number {
     return first + second;
   }
 
   subValues(first: number, second: number): number {
     return first - second;
+  }
+
+  calcValue(calcData: CalculatorVM) {
+    const operator = calcData.getOperator;
+    if (operator === `+`) {
+      calcData.setFirstNumber = this.addValues(calcData.getFirstNumber, calcData.getSecondNumber).toString();
+    } else if (operator === `-`) {
+      calcData.setFirstNumber = this.subValues(calcData.getFirstNumber, calcData.getSecondNumber).toString();
+    }
+    calcData.setOperator = ``;
+    calcData.setSecondNumber = ``;
+    return calcData;
   }
 }

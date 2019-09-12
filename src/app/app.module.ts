@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { CalculatorService } from './services/calculator.service';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatButtonModule,
     MatGridListModule
   ],
-  providers: [],
+  providers: [CalculatorService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

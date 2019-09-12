@@ -16,26 +16,30 @@ export class AppComponent {
   ngOnInit() {
     this.calculatorService.getCalculatorObservable()
       .subscribe((calculatorState) => {
-        this.calculatorVM.setFirstNumber = calculatorState.getFirstNumber;
-        this.calculatorVM.setSecondNumber = calculatorState.getSecondNumber;
+        this.calculatorVM = new CalculatorVM();
+        this.calculatorVM.appendToFirstNumber = calculatorState.getFirstNumber;
+        this.calculatorVM.appendToSecondNumber = calculatorState.getSecondNumber;
         this.calculatorVM.setOperator = calculatorState.getOperator;
         this.valueHolder = this.calculatorVM.getValueHolder;
       })
   }
-  
-  numberClicked(number) {
-    console.log(`${number} button clicked`);
+
+  numberClicked(value: number) {
+    this.calculatorVM.setNumber = value;
+    this.calculatorService.updateCalculatorStream(this.calculatorVM);
   }
 
   addClicked() {
-    console.log(`add button clicked`);
+    this.calculatorVM.setOperator = `+`;
+    this.calculatorService.updateCalculatorStream(this.calculatorVM);
   }
 
   subClicked() {
-    console.log(`sub button clicked`);
+    this.calculatorVM.setOperator = `-`;
+    this.calculatorService.updateCalculatorStream(this.calculatorVM);
   }
 
   equalClicked() {
-    console.log(`equal button clicked`);
+    this.calculatorService.calculate();
   }
 }
